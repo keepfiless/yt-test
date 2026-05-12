@@ -1,4 +1,4 @@
-name: 02 - 🗑️ حذف ویدیوها
+name: 03 - 🗑️ حذف ویدیوها
 
 on:
   workflow_dispatch:
