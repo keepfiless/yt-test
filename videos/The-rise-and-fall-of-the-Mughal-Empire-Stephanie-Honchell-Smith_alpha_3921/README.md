@@ -2,7 +2,7 @@
 
 <div align="center">
   <picture>
-    <img src="thumbnail.jpg" alt="Video Thumbnail" width="250" />
+    <img src="thumbnail.jpg" alt="Video Thumbnail" width="400" />
   </picture>
 </div>
 
