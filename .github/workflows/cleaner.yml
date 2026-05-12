@@ -37,7 +37,6 @@ jobs:
           echo "🗑️ در حال حذف پوشه videos..."
           echo "========================================"
 
-          # Delete videos folder if exists
           if [ -d "videos" ]; then
             rm -rf videos
             echo "✅ پوشه videos حذف شد"
@@ -45,19 +44,15 @@ jobs:
             echo "ℹ️ پوشه videos وجود نداشت"
           fi
 
-          # Recreate videos folder with README.md
           mkdir -p videos
 
-          cat > videos/README.md << 'EOF'
-# سلام
-هنوز هیچ ویدیویی اینجا نیست
-
----
-EOF
+          echo "# سلام" > videos/README.md
+          echo "هنوز هیچ ویدیویی اینجا نیست" >> videos/README.md
+          echo "" >> videos/README.md
+          echo "---" >> videos/README.md
 
           echo "✅ پوشه videos با README.md خالی ایجاد شد"
 
-          # Force add to bypass .gitignore
           git add -f videos/
 
           if ! git diff --cached --quiet; then
@@ -79,12 +74,10 @@ EOF
                 git reset --hard origin/"$BRANCH"
                 rm -rf videos
                 mkdir -p videos
-                cat > videos/README.md << 'EOF'
-# سلام
-هنوز هیچ ویدیویی اینجا نیست
-
----
-EOF
+                echo "# سلام" > videos/README.md
+                echo "هنوز هیچ ویدیویی اینجا نیست" >> videos/README.md
+                echo "" >> videos/README.md
+                echo "---" >> videos/README.md
                 git add -f videos/
                 git diff --cached --quiet || git commit -m "[AVASAM] حذف تمام ویدیوها [skip ci]"
               fi
