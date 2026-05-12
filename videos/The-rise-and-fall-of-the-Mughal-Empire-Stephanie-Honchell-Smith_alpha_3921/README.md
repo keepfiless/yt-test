@@ -2,7 +2,7 @@
 
 <div align="center">
   <picture>
-    <img src="https://github.com///raw//videos/The-rise-and-fall-of-the-Mughal-Empire-Stephanie-Honchell-Smith_alpha_3921/thumbnail.jpg" alt="Video Thumbnail" width="250" />
+    <img src="thumbnail.jpg" alt="Video Thumbnail" width="250" />
   </picture>
 </div>
 
