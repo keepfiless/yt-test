@@ -452,7 +452,7 @@ jobs:
                   if [ -f "$part_file" ]; then
                     PART_BASENAME=$(basename "$part_file")
                     PART_ENCODED=$(urlencode "${PART_BASENAME}")
-                    RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/refs/heads/${BRANCH}/videos/${FOLDER_ENCODED}/${PART_ENCODED}"
+                    RAW_LINK="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/videos/${FOLDER_ENCODED}/${PART_ENCODED}"
                     LINK_NUM=$((LINK_NUM + 1))
                     DOWNLOAD_LINKS_MD="${DOWNLOAD_LINKS_MD}| ${LINK_NUM} | \`${PART_BASENAME}\` | [Download](${RAW_LINK}) |"$'\n'
                   fi
@@ -468,10 +468,10 @@ jobs:
                   # Add thumbnail if it exists (width=250)
                   if [ -f "$BACKUP_DIR/${FINAL_FOLDER_NAME}/thumbnail.jpg" ]; then
                     THUMB_ENCODED=$(urlencode "thumbnail.jpg")
-                    THUMB_RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/refs/heads/${BRANCH}/videos/${FOLDER_ENCODED}/${THUMB_ENCODED}"
+                    THUMB_RAW_LINK="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/videos/${FOLDER_ENCODED}/${THUMB_ENCODED}"
                     printf '%s\n' "<div align=\"center\">"
                     printf '%s\n' "  <picture>"
-                    printf '%s\n' "    <img src=\"thumbnail.jpg" width=\"250\" />"
+                    printf '%s\n' "    <img src=\"thumbnail.jpg\" width=\"250\" />"
                     printf '%s\n' "  </picture>"
                     printf '%s\n' "</div>"
                     printf '%s\n' ""
@@ -545,7 +545,7 @@ jobs:
 
                   SIZE_MB=$(echo "scale=2; $SIZE / 1024 / 1024" | bc)
                   FILE_ENCODED=$(urlencode "${FINAL_FOLDER_NAME}.zip")
-                  RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/refs/heads/${BRANCH}/videos/${FOLDER_ENCODED}/${FILE_ENCODED}"
+                  RAW_LINK="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/videos/${FOLDER_ENCODED}/${FILE_ENCODED}"
 
                   README_FILE="$BACKUP_DIR/${FINAL_FOLDER_NAME}/README.md"
                   {
@@ -555,7 +555,7 @@ jobs:
                     # Add thumbnail if it exists (width=250)
                     if [ -f "$BACKUP_DIR/${FINAL_FOLDER_NAME}/thumbnail.jpg" ]; then
                       THUMB_ENCODED=$(urlencode "thumbnail.jpg")
-                      THUMB_RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/refs/heads/${BRANCH}/videos/${FOLDER_ENCODED}/${THUMB_ENCODED}"
+                      THUMB_RAW_LINK="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/videos/${FOLDER_ENCODED}/${THUMB_ENCODED}"
                       printf '%s\n' "<div align=\"center\">"
                       printf '%s\n' "  <picture>"
                       printf '%s\n' "    <img src=\"${THUMB_RAW_LINK}\" alt=\"Video Thumbnail\" width=\"250\" />"
@@ -612,7 +612,7 @@ jobs:
 
                   SIZE_MB=$(echo "scale=2; $SIZE / 1024 / 1024" | bc)
                   FILE_ENCODED=$(urlencode "${FINAL_FOLDER_NAME}.${EXT}")
-                  RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/refs/heads/${BRANCH}/videos/${FOLDER_ENCODED}/${FILE_ENCODED}"
+                  RAW_LINK="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/videos/${FOLDER_ENCODED}/${FILE_ENCODED}"
 
                   README_FILE="$BACKUP_DIR/${FINAL_FOLDER_NAME}/README.md"
                   {
@@ -622,7 +622,7 @@ jobs:
                     # Add thumbnail if it exists (width=250)
                     if [ -f "$BACKUP_DIR/${FINAL_FOLDER_NAME}/thumbnail.jpg" ]; then
                       THUMB_ENCODED=$(urlencode "thumbnail.jpg")
-                      THUMB_RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/refs/heads/${BRANCH}/videos/${FOLDER_ENCODED}/${THUMB_ENCODED}"
+                      THUMB_RAW_LINK="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/videos/${FOLDER_ENCODED}/${THUMB_ENCODED}"
                       printf '%s\n' "<div align=\"center\">"
                       printf '%s\n' "  <picture>"
                       printf '%s\n' "    <img src=\"${THUMB_RAW_LINK}\" alt=\"Video Thumbnail\" width=\"250\" />"
@@ -781,7 +781,7 @@ jobs:
               # Build the raw download link for subtitle.zip - with error handling
               FOLDER_ENCODED=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "$FOLDER_NAME" 2>/dev/null || echo "$FOLDER_NAME")
               SUB_ZIP_ENCODED=$(python3 -c "import urllib.parse; print(urllib.parse.quote('subtitle.zip', safe=''))" 2>/dev/null || echo "subtitle.zip")
-              SUB_RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/refs/heads/${BRANCH}/videos/${FOLDER_ENCODED}/${SUB_ZIP_ENCODED}"
+              SUB_RAW_LINK="https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/videos/${FOLDER_ENCODED}/${SUB_ZIP_ENCODED}"
 
               # Patch the existing README.md — insert subtitle section after Video Information, before Download Links
               README_FILE="$BACKUP_DIR/${FOLDER_NAME}/README.md"
@@ -870,7 +870,7 @@ jobs:
                 echo ""
                 echo "> No videos downloaded yet."
               } > videos/README.md
-              git add videos/README.md
+              git add -f videos/README.md
               if ! git diff --cached --quiet; then
                 git commit -m "[AVASAM] Initialize videos folder [skip ci]"
                 PUSH_RETRY=0
@@ -919,9 +919,9 @@ jobs:
           mkdir -p videos
           cp -r "$BACKUP_DIR"/* videos/
 
-          git add -A videos/
+          git add -f videos/
           regenerate_master_readme
-          git add videos/README.md
+          git add -f videos/README.md
 
           if ! git diff --cached --quiet; then
             git commit -m "[AVASAM] YouTube download [skip ci]"
@@ -937,9 +937,9 @@ jobs:
                 git fetch origin "$BRANCH"
                 git reset --hard origin/"$BRANCH"
                 cp -r "$BACKUP_DIR"/* videos/
-                git add -A videos/
+                git add -f videos/
                 regenerate_master_readme
-                git add videos/README.md
+                git add -f videos/README.md
                 git diff --cached --quiet || git commit -m "[AVASAM] YouTube download [skip ci]"
               fi
             done
