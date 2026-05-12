@@ -449,7 +449,7 @@ jobs:
                   if [ -f "$part_file" ]; then
                     PART_BASENAME=$(basename "$part_file")
                     PART_ENCODED=$(urlencode "${PART_BASENAME}")
-                    RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/${BRANCH}/videos/${FOLDER_ENCODED}/${PART_ENCODED}"
+                    RAW_LINK="${PART_ENCODED}"
                     LINK_NUM=$((LINK_NUM + 1))
                     DOWNLOAD_LINKS_MD="${DOWNLOAD_LINKS_MD}| ${LINK_NUM} | \`${PART_BASENAME}\` | [Download](${RAW_LINK}) |"$'\n'
                   fi
@@ -464,11 +464,9 @@ jobs:
 
                   # Add thumbnail if it exists (width=250)
                   if [ -f "$BACKUP_DIR/${FINAL_FOLDER_NAME}/thumbnail.jpg" ]; then
-                    THUMB_ENCODED=$(urlencode "thumbnail.jpg")
-                    THUMB_RAW_LINK="https://github.com/${REPO_OWNER}/${REPO_NAME}/raw/${BRANCH}/videos/${FOLDER_ENCODED}/${THUMB_ENCODED}"
                     printf '%s\n' "<div align=\"center\">"
                     printf '%s\n' "  <picture>"
-                    printf '%s\n' "    <img src=\"${THUMB_RAW_LINK}\" alt=\"Video Thumbnail\" width=\"250\" />"
+                    printf '%s\n' "    <img src=\"thumbnail.jpg" width=\"250\" />"
                     printf '%s\n' "  </picture>"
                     printf '%s\n' "</div>"
                     printf '%s\n' ""
